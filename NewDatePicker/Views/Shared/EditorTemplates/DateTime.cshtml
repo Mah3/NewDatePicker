@@ -1,0 +1,55 @@
+﻿@model DateTime?
+
+
+<style>
+    .linkedText {
+        display: inline-block;
+        margin-right: 5px;
+        padding: 3px 3px;
+        height: 31px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    }
+
+    .input-group-addon:last-child {
+        display:inline-block;
+        border: 1px solid #cccccc;
+        margin-left:-12px;
+    }
+
+</style>
+
+
+@if (Model != null)
+{
+    <script>
+        $(function () {
+            $(".linkedPicker").datepick('setDate', new Date("@Model.Value.ToString("MM/dd/yyyy")"));
+        });
+    </script>
+}
+
+
+
+<div class="form-inline">
+
+    <div style="display: none;">
+        <span id="calImg" class=" trigger input-group-addon" style="width: auto;cursor: pointer;">
+            <i class="glyphicon glyphicon-th"></i>
+        </span>
+    </div>
+
+        <input type="text" id="linkedDay" size="2" maxlength="2" class="linkedText" />/
+        <input type="text" id="linkedMonth" size="2" maxlength="2" class="linkedText" />/
+        <input type="text" id="linkedYear" size="4" maxlength="4" class="linkedText" />
+        @Html.HiddenFor(model => model, new { @class = "linkedPicker" })
+</div>

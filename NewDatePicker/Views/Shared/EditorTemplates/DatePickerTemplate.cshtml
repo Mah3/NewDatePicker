@@ -1,0 +1,75 @@
+﻿@model DateTime?
+
+<style>
+    .date-text {
+        display: inline-block;
+        margin-right: 5px;
+        padding: 6px 6px;
+        height: 33px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    }
+
+    .input-group-addon:last-child {
+        border: 1px solid #cccccc;
+    }
+
+    .datepicker-textbox {
+        display: none;
+    }
+</style>
+
+<div class="form-inline">
+    @{
+        var day = string.Empty;
+        var month = string.Empty;
+        var year = string.Empty;
+    }
+    @if (!ViewData.ModelState.IsValid)
+    {
+        ModelState modelState;
+        ViewData.ModelState.TryGetValue(ViewData.TemplateInfo.GetFullHtmlFieldName(""), out modelState);
+        if (modelState != null && modelState.Errors.Count >= 1 && !string.IsNullOrWhiteSpace(modelState.Value.AttemptedValue))
+        {
+            var attemtedValues = modelState.Value.AttemptedValue.Split('/');
+            day = attemtedValues[0];
+            month = attemtedValues[1];
+            year = attemtedValues[2];
+        }
+        else
+        {
+            day = Model.HasValue ? Model.Value.Day.ToString() : string.Empty;
+            month = Model.HasValue ? Model.Value.Month.ToString() : string.Empty;
+            year = Model.HasValue ? Model.Value.Year.ToString() : string.Empty;
+        }
+
+    }
+    else
+    {
+        day = Model.HasValue ? Model.Value.Day.ToString() : string.Empty;
+        month = Model.HasValue ? Model.Value.Month.ToString() : string.Empty;
+        year = Model.HasValue ? Model.Value.Year.ToString() : string.Empty;
+    }
+    <input type="text" class="date-text" title="Valid to - Two digit day" id="Date_Day"    maxlength="2" size="1" value="@day">
+    /
+    <input type="text" class="date-text" title="Valid to - Two digit month" id="Date_Month"    maxlength="2" size="1" value="@month">
+    /
+    <input type="text" class="date-text" title="Valid to - Four digit year" id="Date_Year"  maxlength="4" size="10" value="@year">
+
+    <div class="input-group form-group date" style="margin-left: -50px" data-provide="datepicker" data-date-autoclose="true" data-date-format="dd/mm/yyyy">
+        @Html.TextBoxFor(model => model, "{0:dd/MM/yyyy}", new { @class = "datepicker-textbox"  })
+        
+        <span class="input-group-addon" style="width: auto; cursor: pointer;">
+            <i class="glyphicon glyphicon-th"></i>
+        </span>
+    </div>
+</div>
